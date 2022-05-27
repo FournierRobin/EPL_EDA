@@ -1,12 +1,6 @@
-from turtle import color
-from git import head
 import pandas as pd
 import streamlit as st
-import numpy as np
-import plotly.express as px
-import matplotlib.pyplot as plt
 import altair as alt
-import seaborn as sns
 
 # Déclaration des dataframes :
 
