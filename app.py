@@ -82,8 +82,8 @@ with dataset_classement:
               value=keepers_stats_classement['Arrêts%'].max())
     m3.metric(label="Équipe avec le meilleur ratio d'arrêts",
               value=keepers_stats_classement['Equipe'][keepers_stats_classement['Arrêts%'].idxmax()])
-    m4.metric(label='Équipe Minimum de Buts Encaissée',
-              value=classement_pl['BM'].max())
+    m4.metric(label='Minimum de Buts Encaissée',
+              value=classement_pl['BE'].min())
 
 with dataset_players_keepers:
     players_col, keepers_col = st.columns(2)
