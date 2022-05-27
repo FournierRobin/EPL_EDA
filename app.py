@@ -1,3 +1,4 @@
+from operator import index
 import pandas as pd
 import streamlit as st
 import altair as alt
@@ -46,12 +47,43 @@ with header:
 
 
 with dataset_classement:
-    st.header("Presentation des datasets")
-    st.subheader(
+    c1, c2 = st.columns((2, 2))
+    m1, m2, m3, m4 = st.columns((3, 1, 1, 1))
+
+    c1.header("Presentation des datasets")
+    c1.subheader(
         "Classement de la Premier League, la ligue Anglaise de Football")
-    st.dataframe(
+    m1.dataframe(
         classement_pl[["Equipe", "MJ", "Pts", "V", "N", "D", "BM", "BE"]])
-    st.title("")
+    m1.title("")
+
+    c2.title("")
+    c2.title("")
+    c2.subheader("Quelques chiffres importants")
+
+    # Première ligne
+    m2.metric(label='Maximum de Points',
+              value=classement_pl['Pts'].max())
+    m3.metric(label='Max de Buts Marqués Équipe',
+              value=classement_pl['BM'].max())
+    m4.metric(label='Meilleure Équipe',
+              value=classement_pl['Equipe'][classement_pl['Pts'].idxmax()])
+
+    # Seconde ligne
+    m2.metric(label='Buts/90min du meilleur buteur',
+              value=players_stats['Buts (sans les pénaltys)'][players_stats['Buts (sans les pénaltys)'].idxmax()])
+    m3.metric(label='Meilleur Buteur/90min',
+              value=players_stats['Joueur'][players_stats['Buts (sans les pénaltys)'].idxmax()])
+    m4.metric(label='Equipe du meilleur buteur',
+              value=players_stats['Equipe'][players_stats['Buts (sans les pénaltys)'].idxmax()])
+
+    # Troisième ligne
+    m2.metric(label="Pourcentage d'arrêts/frappe le plus élevé",
+              value=keepers_stats_classement['Arrêts%'].max())
+    m3.metric(label="Équipe avec le meilleur ratio d'arrêts",
+              value=keepers_stats_classement['Equipe'][keepers_stats_classement['Arrêts%'].idxmax()])
+    m4.metric(label='Équipe Minimum de Buts Encaissée',
+              value=classement_pl['BM'].max())
 
 with dataset_players_keepers:
     players_col, keepers_col = st.columns(2)
@@ -163,12 +195,8 @@ with perf_players:
 
 
 with pair_plot:
-
-    c1, c2 = st.columns((3, 2))
-    m1, m2, m3 = st.columns((3, 1, 1))
-
-    c1.subheader("En fonction des postes")
-    c1.markdown(
+    st.subheader("En fonction des postes")
+    st.markdown(
         "Pair plot des statistiques de joueurs en fonction de leur poste")
 
     # PAIR PLOT
@@ -176,29 +204,14 @@ with pair_plot:
         alt.X(alt.repeat("column"), type='quantitative'),
         alt.Y(alt.repeat("row"), type='quantitative'),
         color='Pos'
-    ).properties(
-        width=200,
-        height=200
     ).repeat(
         row=['Buts (sans les pénaltys)'],
         column=['Passes décisives', 'npxG+xA', 'Actions menant à un tir']
     )
-    m1.altair_chart(pair_plot, use_container_width=True)
-    m1.caption(
+    st.altair_chart(pair_plot, use_container_width=True)
+    st.caption(
         "On peut remarque ici que pour un nombre équivalent de passes décisives, les AT et AT/MT sont bien plus efficaces devant le but")
 
-    c2.subheader("Quelques chiffres importants")
-    # Première ligne
-    m2.metric(label='Maximum de Points',
-              value=classement_pl['Pts'][1])
-    m3.metric(label='Maximum de Buts marqués par une équipe',
-              value=classement_pl['BM'][1])
-
-    # Seconde ligne
-    m2.metric(label='Joueur avec le plus de buts marqués',
-              value=players_stats['Joueur'][players_stats['Buts (sans les pénaltys)'].idxmax()])
-    m3.metric(label='Equipe du joueur avec le plus de buts marqués',
-              value=players_stats['Equipe'][players_stats['Buts (sans les pénaltys)'].idxmax()])
 
 with list_plot:
 
@@ -210,9 +223,6 @@ with list_plot:
         alt.X(alt.repeat("column"), type='quantitative'),
         alt.Y(alt.repeat("row"), type='quantitative'),
         color='Equipe'
-    ).properties(
-        width=300,
-        height=300
     ).repeat(
         row=['Pts'],
         column=['Passes décisives', 'npxG+xA', 'Buts (sans les pénaltys)']
