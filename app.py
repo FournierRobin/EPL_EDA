@@ -42,7 +42,7 @@ list_plot = st.container()
 keepers_plot = st.container()
 
 with header:
-    st.title("EPL Football EDA : La meilleure équipe est-t-elle toujours celle qui possède les meilleurs joueurs ?")
+    st.title("EPL Football EDA : La meilleure équipe est-elle toujours celle qui possède les meilleurs joueurs ?")
     st.markdown("Bienvenue dans cette EDA. Nous allons essayer de voir ici si la présence des meilleurs joueurs implique toujours des performances collectives supérieurs")
 
 
@@ -50,7 +50,7 @@ with dataset_classement:
     c1, c2 = st.columns((2, 2))
     m1, m2, m3, m4 = st.columns((3, 1, 1, 1))
 
-    c1.header("Presentation des datasets")
+    c1.header("Présentation des datasets")
     c1.subheader(
         "Classement de la Premier League, la ligue Anglaise de Football")
     m1.dataframe(
@@ -64,7 +64,7 @@ with dataset_classement:
     # Première ligne
     m2.metric(label='Maximum de Points',
               value=classement_pl['Pts'].max())
-    m3.metric(label='Max de Buts Marqués Équipe',
+    m3.metric(label='Max de Buts Marqués/Équipe',
               value=classement_pl['BM'].max())
     m4.metric(label='Meilleure Équipe',
               value=classement_pl['Equipe'][classement_pl['Pts'].idxmax()])
@@ -123,7 +123,7 @@ with distribution:
     val_counts_pos = (val_counts_pos + text).properties(height=400)
     g_col.altair_chart(val_counts_pos, use_container_width=True)
     g_col.markdown(
-        "Le plus grand nombre de joueurs présent dans notre dataset sont les defenseurs, avec 159 rapport sur leurs performances, mais étant donné que les performances sont ramenées sur 90min, aucun impact sur nos statistiques")
+        "Le plus grand nombre de joueurs présent dans notre dataset sont les defenseurs, avec 159 rapports sur leurs performances. Étant donné que les performances sont ramenées sur 90min, aucun impact sur nos statistiques")
     g_col.title("")
 
     # COLONNE DROITE
@@ -146,7 +146,7 @@ with distribution:
     )
     val_counts_joueurs = (val_counts_joueurs + text).properties(height=400)
     r_col.altair_chart(val_counts_joueurs, use_container_width=True)
-    r_col.markdown("Le nombre de joueurs dont les rapports sont disponibles parmis les 20 équipes varient mais reste aux alentours d'une vingtaine de données disponibles par équipe")
+    r_col.markdown("Le nombre de joueurs dont les rapports sont disponibles parmis les 20 équipes varie, mais reste aux alentours d'une vingtaine de données disponibles par équipe")
     r_col.title("")
 
 with perf_players:
@@ -171,7 +171,7 @@ with perf_players:
     )
     g_col.altair_chart(goals_by_pos, use_container_width=True)
     g_col.markdown(
-        "Comme nous pouvions nous y attendre, on voit ici une large domination des attaquants/milieu dans la répartitions des buts marqués")
+        "Comme nous pouvions nous y attendre, on voit ici une large domination des attaquants/milieus dans la répartition des buts marqués")
     g_col.title("")
 
     # COLONNE DROITE
@@ -190,14 +190,14 @@ with perf_players:
     )
     r_col.altair_chart(aerien_duels_by_pos, use_container_width=True)
     r_col.markdown(
-        "Ici, on remarque grace que les Defenseurs ont des statistiques mieux condensés que les autres postes, ainsi malgré les exceptions en attaque, ce sont eux qui dominent ce secteur")
+        "Ici, on remarque grace que les defenseurs ont des statistiques plus condensés que les autres postes, ainsi malgré quelques exceptions en attaque, ce sont eux qui dominent ce secteur")
     r_col.title("")
 
 
 with pair_plot:
     st.subheader("En fonction des postes")
     st.markdown(
-        "Pair plot des statistiques de joueurs en fonction de leur poste")
+        "Pair plot des statistiques de joueur en fonction de leur poste")
 
     # PAIR PLOT
     pair_plot = alt.Chart(players_stats).mark_circle().encode(
@@ -209,8 +209,6 @@ with pair_plot:
         column=['Passes décisives', 'npxG+xA', 'Actions menant à un tir']
     )
     st.altair_chart(pair_plot, use_container_width=True)
-    st.caption(
-        "On peut remarque ici que pour un nombre équivalent de passes décisives, les AT et AT/MT sont bien plus efficaces devant le but")
 
 
 with list_plot:
